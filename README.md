@@ -18,10 +18,12 @@ Vous pouvez trouver une version exécutable sur le releases.
 	Sous Linux Alpine.
 
 	Taper la commande apk add npm pour installer npm
+	Taper la commande apk add git pour installer git
 
-1. cloner ou copier le contenu du référentiel depuis github
-1. exécuter npm ipour installer les dépendances
-1. exécuter npm run build --workspace @svgedit/svgcanvaspour créer la dépendance svgcanvas localement
+
+1. Cloner ou copier le contenu du référentiel depuis github: git clone https://github.com/christophe94700/TracerDesigner.git
+1. Exécuter npm i pour installer les dépendances
+1. Exécuter npm run dev
 1. pour tester, vous pouvez exécuter npm run startpour démarrer un serveur local et accéder http://localhost:8000/src/editor/index.html avec un navigateur pris en charge exécutez npm run buildpour créer un bundle que vous pouvez servir à partir de votre propre serveur Web
 
 # *Construire les fichiers EXE*
@@ -40,7 +42,8 @@ Vous pouvez trouver une version exécutable sur le releases.
 
 Cloner les fichiers sources.
 
-	git clone https://github.com/xxxx/xxxxx.git
+	git clone https://github.com/christophe94700/TracerDesigner.git
+
 	cd xxxxx
 	
 	npm install
