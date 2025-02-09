@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 51.04 49.47"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="saveImgS.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="16.312917"
+     inkscape:cx="25.531915"
+     inkscape:cy="24.735001"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Calque_2"
+     showguides="true" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">.cls-1,.cls-4{fill:none;}.cls-2{fill:#f9ba00;}.cls-2,.cls-3{stroke:#f9ba00;}.cls-2,.cls-3,.cls-4{stroke-linejoin:round;}.cls-3{fill:#fff;stroke-width:5px;}.cls-3,.cls-4{stroke-linecap:round;}.cls-4{stroke:#fff;stroke-width:2px;}</style>
+  </defs>
+  <g
+     id="Calque_2"
+     data-name="Calque 2">
+    <g
+       id="Calque_1-2"
+       data-name="Calque 1">
+      <polyline
+         class="cls-1"
+         points="6.8 0 51.04 0 51.04 49.47 0 49.47 0 0 6.8 0"
+         id="polyline1" />
+      <polygon
+         class="cls-2"
+         points="25.35 32.65 32.05 20.88 18.65 20.88 25.35 32.65"
+         id="polygon1" />
+      <line
+         class="cls-3"
+         x1="21.702377"
+         y1="20.679329"
+         x2="21.702377"
+         y2="4.3693309"
+         id="line1" />
+      <path
+         class="cls-4"
+         d="M31.61,27.8h6a6.84,6.84,0,0,1,6.84,6.84v-.18a6.84,6.84,0,0,1-6.84,6.84H13.48a6.84,6.84,0,0,1-6.84-6.84v.18a6.84,6.84,0,0,1,6.84-6.84h5.67"
+         id="path1" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#line1"
+         id="use2"
+         transform="translate(7.3256877,-0.12260224)" />
+    </g>
+  </g>
+</svg>

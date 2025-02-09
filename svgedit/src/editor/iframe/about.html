@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>A propos</title>	
+		<style>
+			#close-btn {
+			position: fixed;
+			top: 10px;
+			right: 10px;
+			padding: 10px;
+			font-size: 15px;
+			font: blod;
+			background-color: #f9bc01;
+			border-radius: 4px;
+			color: white;
+			border: 1px;
+			cursor: pointer;
+			z-index: 100;
+			}
+			#close-btn:hover{
+			background-color:#2B3C45;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<button id="close-btn">X</button>
+		<script>
+			document.getElementById('close-btn').addEventListener('click', function() {
+				// Fermer l'iframe en appelant une fonction dans le parent
+				window.parent.postMessage('closeIframe', '*');
+			});
+		</script>
+	<h3>A propos</h3>	
+	<h4>Tracer Designer <span style="color: white">Version 1.0.2</span></br></br>
+	Christophe Caron<p style="color: white">https://github.com/christophe94700/TracerDesigner</p>
+	SVGEDIT<p style="color: white">https://github.com/SVG-Edit/svgedit</p></h4>
+	</body>
+</html>
+

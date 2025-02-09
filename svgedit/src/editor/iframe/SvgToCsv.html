@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Conversion SVG vers CSV</title>
+		
+		<style>
+			body {
+			font-family: Arial, sans-serif;
+			padding: 20px;
+			color: white;
+			}
+			
+			#close-btn {
+			position: fixed;
+			top: 10px;
+			right: 10px;
+			padding: 10px;
+			font-size: 15px;
+			font: blod;
+			background-color: #f9bc01;
+			border-radius: 4px;
+			color: white;
+			border: 1px;
+			cursor: pointer;
+			z-index: 100;
+			}
+			#convert-btn, #downloadButton{
+			font-size: 15px;
+			font: blod;
+			color: white;
+			border: 1px solid #dedede;
+			line-height: 130%;
+			float: left;
+			background-color: #f9bc01;
+			padding: 5px 10px 5px 7px;
+			/* Firefox */
+			line-height: 17px;
+			/* Safari */
+			margin: 5px 20px 0 0;
+			border: 1px var(--border-color) solid;
+			border-top-color: #FFF;
+			border-left-color: #FFF;
+			border-radius: 5px;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			cursor: pointer;
+			}
+			#convert-btn:hover{
+			background-color:#2B3C45;
+			
+			}
+			#close-btn:hover{
+			background-color:#2B3C45;
+			
+			}
+			
+			#downloadButton:hover{
+			background-color:#2B3C45;
+			
+			}
+			
+			input[type=file]::file-selector-button {
+			background: #f9bc01;
+			border: none;
+			color: white;
+			padding:8px 12px;
+			border-radius: 5px;
+			}
+			
+			input[type=file]::file-selector-button:hover {
+			background: #2B3C45;
+			
+			}
+		</style>
+		
+	</head>
+	<body>
+		<h2>Conversion SVG vers CSV</h2>
+		
+		<button id="close-btn">X</button>
+		
+		<script>
+			document.getElementById('close-btn').addEventListener('click', function() {
+				// Fermer l'iframe en appelant une fonction dans le parent
+				window.parent.postMessage('closeIframe', '*');
+			});
+		</script>
+		
+		
+		<label for="svgFile">Choose SVG file:</label>
+		<input type="file" id="svgFile" accept=".svg"><br><br>
+		
+		<div style="display: flex; align-items: center; gap: 10px;">
+			<button id="convert-btn">Convertir</button>
+			<label><input type="checkbox" id="applyModification">Format Excel</label>
+		</div></br>
+		
+		
+		<textarea id="output" rows="20" cols="100" readonly></textarea><br><br>
+		<button id="downloadButton" style="display:none;">Télécharger le fichier CSV</button>
+		
+		<script>
+			// Check if a value is numeric
+			function isNumber(value) {
+				return !isNaN(parseFloat(value)) && isFinite(value);
+			}
+			
+			// Check if a point is inside a polygon
+			function pointInsidePolygon(x, y, poly) {
+				let inside = false;
+				const n = poly.length;
+				
+				for (let i = 0, j = n - 1; i < n; j = i++) {
+					const xi = poly[i][0], yi = poly[i][1];
+					const xj = poly[j][0], yj = poly[j][1];
+					
+					const intersect = ((yi > y) !== (yj > y)) &&
+                    (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+					if (intersect) inside = !inside;
+				}
+				
+				return inside;
+			}
+			
+			document.getElementById("convert-btn").addEventListener("click", () => {
+				const fileInput = document.getElementById("svgFile");
+				
+				function remplacerExtension(nomFichier, nouvelleExtension) {
+					// Utilise une expression régulière pour remplacer l'extension
+					return nomFichier.replace(/\.[^/.]+$/, '.' + nouvelleExtension);
+				}
+				
+				if (!fileInput.files.length) {
+					alert("Veuillez sélectionner un fichier SVG.");
+					return;
+				}
+				
+				const file = fileInput.files[0];
+				const reader = new FileReader();
+				
+				reader.onload = (event) => {
+					const parser = new DOMParser();
+					const svgDoc = parser.parseFromString(event.target.result, "image/svg+xml");
+					
+					const csvData = [];
+					
+					// Process rectangles
+					svgDoc.querySelectorAll("rect").forEach((rect, index) => {
+						const id = rect.id || `rect${index + 1}`;
+						const x = parseFloat(rect.getAttribute("x")) || 0;
+						const y = parseFloat(rect.getAttribute("y")) || 0;
+						const width = parseFloat(rect.getAttribute("width")) || 0;
+						const height = parseFloat(rect.getAttribute("height")) || 0;
+						
+						const coords = [
+						[Math.round(x) , Math.round(y) ],// Top-left
+						[Math.round(x + width) , Math.round(y) ],// Top-right
+						[Math.round(x + width) , Math.round(y + height) ],// Bottom-right
+						[Math.round(x) , Math.round(y + height) ]// Bottom-left
+						];
+						
+						const coordString = coords.map(pt => pt.join(",")).join(",");
+						csvData.push(`${id};${coordString}`);
+					});
+					
+					// Process text
+					svgDoc.querySelectorAll("text").forEach((text, index) => {
+						const id = text.id || `text${index + 1}`;
+						const x = parseFloat(text.getAttribute("x")) || 0;
+						const y = parseFloat(text.getAttribute("y")) || 0;
+						const applyModification = document.getElementById("applyModification").checked;
+						const coord = applyModification ? `="${Math.round(x)},${Math.round(y)}"` : `${Math.round(x)},${Math.round(y)}`;
+						
+						csvData.push(`${id};${coord}`);
+					});
+					
+					// Process path
+					const paths = svgDoc.querySelectorAll("path");
+					
+					paths.forEach((path, index) => {
+						const id = path.id || `path${index + 1}`;
+						const d = path.getAttribute("d");
+						
+						if (!d) return;
+						
+						const commands = d.match(/[a-zA-Z]|-?\d*\.?\d+/g); // Matches commands and numbers
+						const points = [];
+						let x = 0, y = 0; // Current position
+						let x1 = 0, y1 = 0; // N-1 position
+						let x0 = 0, y0 = 0; // Start position for 'Z'
+						
+						for (let i = 0; i < commands.length; i++) {
+							const cmd = commands[i];
+							switch (cmd) {
+								case "M": // Move to (absolute)
+								x = Math.round(parseFloat(commands[++i]));
+								y = Math.round(parseFloat(commands[++i]));
+								//points.push(`${Math.round(x)},${Math.round(y)}`);
+								[x0, y0] = [x, y]; // Update start point
+								[x1, y1] = [x, y]; // Update start point
+								break;
+								case "m": // Move to (relative)
+								x += Math.round(parseFloat(commands[++i]));
+								y += Math.round(parseFloat(commands[++i]));
+								//points.push(`${Math.round(x)},${Math.round(y)}`);
+								[x0, y0] = [x, y];
+								[x1, y1] = [x, y];
+								break;
+								case "L": // Line to (absolute)
+								x = Math.round(parseFloat(commands[++i]));
+								y = Math.round(parseFloat(commands[++i]));
+								if (JSON.stringify([x1, y1]) != JSON.stringify([x, y])) {
+									points.push(`${(x)},${(y)}`);
+									[x1, y1] = [x, y];
+								}
+								break;
+								case "l": // Line to (relative)
+								x += Math.round(parseFloat(commands[++i]));
+								y += Math.round(parseFloat(commands[++i]));
+								if (JSON.stringify([x1, y1]) != JSON.stringify([x, y])) {
+									points.push(`${(x)},${(y)}`);
+									[x1, y1] = [x, y];
+								}
+								break;
+								case "H": // Horizontal line (absolute)
+								x = Math.round(parseFloat(commands[++i]));
+								if (JSON.stringify([x1, y1]) != JSON.stringify([x, y])) {
+									points.push(`${(x)},${(y)}`);
+									[x1, y1] = [x, y];
+								}
+								break;
+								case "h": // Horizontal line (relative)
+								x += Math.round(parseFloat(commands[++i]));
+								if (JSON.stringify([x1, y1]) != JSON.stringify([x, y])) {
+									points.push(`${(x)},${(y)}`);
+									[x1, y1] = [x, y];
+								}
+								break;
+								case "V": // Vertical line (absolute)
+								y = Math.round(parseFloat(commands[++i]));
+								if (JSON.stringify([x1, y1]) != JSON.stringify([x, y])) {
+									points.push(`${(x)},${(y)}`);
+									[x1, y1] = [x, y];
+								}
+								break;
+								case "v": // Vertical line (relative)
+								y += Math.round(parseFloat(commands[++i]));
+								if (JSON.stringify([x1, y1]) != JSON.stringify([x, y])) {
+									points.push(`${(x)},${(y)}`);
+									[x1, y1] = [x, y];
+								}
+								break;
+								case "C": // Cubic Bézier curve (absolute)
+								// We only track end points for simplicity
+								x = Math.round(parseFloat(commands[++i + 2]));
+								y = Math.round(parseFloat(commands[++i + 2]));
+								if (JSON.stringify([x1, y1]) != JSON.stringify([x, y])) {
+									points.push(`${(x)},${(y)}`);
+									[x1, y1] = [x, y];
+								}
+								break;
+								case "c": // Cubic Bézier curve (relative)
+								x += Math.round(parseFloat(commands[++i + 2]));
+								y += Math.round(parseFloat(commands[++i + 2]));
+								console.log(x);
+								console.log(y);
+								if (JSON.stringify([x1, y1]) != JSON.stringify([x, y])) {
+									points.push(`${(x)},${(y)}`);
+									[x1, y1] = [x, y];
+								}								
+								break;
+								case "Z":
+								case "z": // Close path
+								break;
+								default:
+								if (!isNaN(parseFloat(cmd))) {
+									// If there are unexpected numbers, skip them
+									continue;
+								}
+								break;
+							}
+							
+						}
+						
+						csvData.push(`${id};${points.join(",")}`);
+					});
+					
+					const output = document.getElementById("output");
+					output.value = csvData.join("\n");
+					
+					// Remplacer l'extension du fichier d'origine par .csv
+					const csvFileName = remplacerExtension(file.name, 'csv');
+					
+					const downloadButton = document.getElementById("downloadButton");
+					downloadButton.style.display = "block";
+					downloadButton.onclick = () => {
+						const blob = new Blob([csvData.join("\n")], { type: "text/csv" });
+						const url = URL.createObjectURL(blob);
+						const link = document.createElement("a");
+						link.href = url;
+						link.download = csvFileName;
+						link.click();
+					};
+				};
+				
+				reader.readAsText(file);
+			});
+		</script>
+	</body>
+</html>
