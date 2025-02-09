@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "TracerDesigner",
+  "version": "1.0.2",
+  "identifier": "domotronic.fr",
+  "build": {
+    "beforeBuildCommand": "npm run prebuild --prefix svgedit && npm run build --prefix svgedit",
+    "beforeDevCommand": "npm run prebuild --prefix svgedit && npm run start --prefix svgedit",
+    "devUrl": "http://localhost:8000/src/editor/",
+    "frontendDist": "../svgedit/dist/editor"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 600,
+        "resizable": true,
+        "title": "Tracer Designer",
+        "width": 800
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+	"copyright": "Christophe@caron.tv",
+    "targets": "all",
+	"windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": ""
+      },
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
