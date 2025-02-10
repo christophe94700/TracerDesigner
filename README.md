@@ -38,13 +38,15 @@ Vous pouvez trouver une version exécutable sur le releases.
 
 ![](Rust.PNG)
 
+**git** https://gitforwindows.org/
+
 **Création de l'application**
 
 Cloner les fichiers sources.
 
 	git clone https://github.com/christophe94700/TracerDesigner.git
 
-	cd xxxxx
+	cd TracerDesigner
 	
 	npm install
 
