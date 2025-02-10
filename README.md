@@ -15,16 +15,19 @@ Tracer Designer est une application autonome compatible avec Windows, macOS et L
 Vous pouvez trouver une version exécutable sur le releases.
 
 # *Version Web*
-	Sous Linux Alpine.
+**Sous Linux Alpine.**
 
-	Taper la commande apk add npm pour installer npm
-	Taper la commande apk add git pour installer git
+Taper la commande **apk add npm** pour installer npm
+
+Taper la commande **apk add git** pour installer git
 
 
-1. Cloner ou copier le contenu du référentiel depuis github: git clone https://github.com/christophe94700/TracerDesigner.git
-1. Exécuter npm i pour installer les dépendances
-1. Exécuter npm run dev
-1. pour tester, vous pouvez exécuter npm run startpour démarrer un serveur local et accéder http://localhost:8000/src/editor/index.html avec un navigateur pris en charge exécutez npm run buildpour créer un bundle que vous pouvez servir à partir de votre propre serveur Web
+1. Cloner ou copier le contenu du référentiel depuis github: **git clone https://github.com/christophe94700/TracerDesigner.git**
+1. Aller dans le répertoire svgedit. **cd TracerDesigner/svgedit**
+1. Exécuter **npm i** pour installer les dépendances
+1. Exécuter **npm run build**
+1. Pour tester, vous pouvez exécuter **npm run start** pour démarrer un serveur local et accéder http://localhost:8000/src/editor/index.html
+
 
 # *Construire les fichiers EXE*
 
