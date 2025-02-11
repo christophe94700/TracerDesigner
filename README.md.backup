@@ -27,7 +27,9 @@ Taper la commande **apk add git** pour installer git
 1. Exécuter **npm i** pour installer les dépendances
 1. Exécuter **npm run build**
 1. Pour tester, vous pouvez exécuter **npm run start** pour démarrer un serveur local et accéder http://localhost:8000/src/editor/index.html
+1. Copier les fichiers du répertoire TracerDesigner/svgedit/dist/editor sur votre serveur web (Apache ou Nignx)
 
+https://designer.ronk.fr/
 
 # *Construire les fichiers EXE*
 
